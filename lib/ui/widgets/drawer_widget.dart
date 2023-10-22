@@ -1,6 +1,5 @@
 import 'package:first_app/logic/bloc/bloc_theme/theme_bloc.dart';
 import 'package:first_app/ui/widgets/drawer_item_widget.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,19 +11,19 @@ class MyDrawer extends StatelessWidget {
     List<dynamic> menu = [
       {
         "title": "Counter bloc",
-        "route": "/",
+        "route": "/counter1",
         "trailingIcon": Icons.arrow_forward,
         "leadingIcon": Icons.home,
       },
       {
         "title": "Counter state full",
-        "route": "/contact",
+        "route": "/counter2",
         "trailingIcon": Icons.arrow_forward,
         "leadingIcon": Icons.contact_emergency,
       },
       {
-        "title": "About",
-        "route": "/about",
+        "title": "Users",
+        "route": "/users",
         "trailingIcon": Icons.arrow_forward,
         "leadingIcon": Icons.accessibility_outlined,
       },

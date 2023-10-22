@@ -1,7 +1,7 @@
 import 'package:first_app/logic/bloc/bloc_counter/counter_bloc.dart';
 import 'package:first_app/logic/bloc/bloc_theme/theme_bloc.dart';
-import 'package:first_app/ui/pages/About.dart';
 import 'package:first_app/ui/pages/counter_statful_screen.dart';
+import 'package:first_app/ui/pages/users_screen.dart';
 import 'package:first_app/ui/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,11 +40,11 @@ class RootView extends StatelessWidget {
         return MaterialApp(
           theme: state.themeData,
           routes: {
-            "/": (context) => const HomePage(),
-            "/contact": (context) => const CounterStateFulScreen(),
-            "/about": (context) => const About(),
+            "/counter1": (context) => const HomePage(),
+            "/counter2": (context) => const CounterStateFulScreen(),
+            "/users": (context) => const UsersScreen(),
           },
-          initialRoute: "/",
+          initialRoute: "/counter1",
         );
       },
     );

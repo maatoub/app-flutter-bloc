@@ -35,6 +35,7 @@ class HomePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
+            heroTag: null,
             onPressed: () {
               context.read<CounterBloc>().add(
                     CounterDecrementEvent(),
@@ -43,6 +44,7 @@ class HomePage extends StatelessWidget {
             child: const Icon(Icons.remove),
           ),
           FloatingActionButton(
+            heroTag: null,
             onPressed: () {
               context.read<CounterBloc>().add(
                     CounterIncrementEvent(),
