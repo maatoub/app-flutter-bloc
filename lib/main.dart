@@ -1,5 +1,6 @@
 import 'package:first_app/logic/bloc/bloc_counter/counter_bloc.dart';
 import 'package:first_app/logic/bloc/bloc_theme/theme_bloc.dart';
+import 'package:first_app/logic/bloc/bloc_users/bloc/users_bloc.dart';
 import 'package:first_app/ui/pages/counter_statful_screen.dart';
 import 'package:first_app/ui/pages/users_screen.dart';
 import 'package:first_app/ui/pages/home.dart';
@@ -22,6 +23,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ThemeBloc(),
+        ),
+        BlocProvider(
+          create: (context) => UsersBloc(),
         ),
       ],
       child: const RootView(),
