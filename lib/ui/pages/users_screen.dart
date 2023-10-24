@@ -19,7 +19,9 @@ class UsersScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                
                 Expanded(
+
                   child: TextFormField(
                     controller: keywords,
                     decoration: InputDecoration(
@@ -47,6 +49,54 @@ class UsersScreen extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          BlocBuilder<UsersBloc, UsersState>(
+            builder: (context, state) {
+              if (state is SearchUsersLoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is SearchUsersErrorState) {
+                return Column(
+                  children: [
+                    Text(state.errorMessage),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: const Text("Retry"),
+                    ),
+                  ],
+                );
+              } else if (state is SearchUsersSuccessState) {
+                return Expanded(
+                  child: ListView.separated(
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 30,
+                                backgroundImage: NetworkImage(
+                                    state.listUsers.items[index].avatarUrl),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Text(state.listUsers.items[index].login),
+                            ],
+                          ),
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return const Divider(
+                          height: 4,
+                        );
+                      },
+                      itemCount: state.listUsers.items.length),
+                );
+              } else {
+                return Container();
+              }
+            },
           ),
         ],
       ),
