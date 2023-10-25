@@ -1,6 +1,7 @@
 import 'package:first_app/logic/bloc/bloc_users/bloc/users_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 class UsersScreen extends StatelessWidget {
   const UsersScreen({super.key});
@@ -10,7 +11,21 @@ class UsersScreen extends StatelessWidget {
     TextEditingController keywords = TextEditingController();
     return Scaffold(
       appBar: AppBar(
-        title: const Text("get users"),
+        title: BlocBuilder<UsersBloc, UsersState>(
+          builder: (context, state) {
+            if (state is SearchUsersSuccessState) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Get Users'),
+                  Text('${state.currentPage } / ${state.totalPage}'),
+                ],
+              );
+            } else {
+              return const Text('Get Users');
+            }
+          },
+        ),
       ),
       body: Column(
         children: [
@@ -19,9 +34,7 @@ class UsersScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                
                 Expanded(
-
                   child: TextFormField(
                     controller: keywords,
                     decoration: InputDecoration(
@@ -38,10 +51,11 @@ class UsersScreen extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {
-                    context.read<UsersBloc>().add(
-                          SearchUsersEvent(keyword: keywords.text),
-                        );
-                    keywords.text = "";
+                    context.read<UsersBloc>().add(SearchUsersEvent(
+                          keywords.text,
+                          0,
+                          20,
+                        ));
                   },
                   icon: const Icon(Icons.search),
                   color: Theme.of(context).primaryColor,
@@ -68,20 +82,39 @@ class UsersScreen extends StatelessWidget {
                 );
               } else if (state is SearchUsersSuccessState) {
                 return Expanded(
-                  child: ListView.separated(
+                  child: LazyLoadScrollView(
+                    onEndOfPage: () {
+                      context.read<UsersBloc>().add(
+                            NextPageEvent(
+                              state.currentKeywords,
+                              state.currentPage + 1,
+                              state.sizePage,
+                            ),
+                          );
+                    },
+                    child: ListView.separated(
                       itemBuilder: (context, index) {
                         return ListTile(
                           title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 30,
+                                    backgroundImage: NetworkImage(
+                                        state.listUsers.items[index].avatarUrl),
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  Text(state.listUsers.items[index].login),
+                                ],
+                              ),
                               CircleAvatar(
-                                radius: 30,
-                                backgroundImage: NetworkImage(
-                                    state.listUsers.items[index].avatarUrl),
+                                child: Text(
+                                    '${state.listUsers.items[index].score}'),
                               ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Text(state.listUsers.items[index].login),
                             ],
                           ),
                         );
@@ -91,7 +124,9 @@ class UsersScreen extends StatelessWidget {
                           height: 4,
                         );
                       },
-                      itemCount: state.listUsers.items.length),
+                      itemCount: state.listUsers.items.length,
+                    ),
+                  ),
                 );
               } else {
                 return Container();

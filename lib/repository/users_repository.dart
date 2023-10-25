@@ -12,9 +12,8 @@ class UsersRepository {
       http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         //covert json type text to dart
-        Map<String, dynamic> listUsersMap = jsonDecode(response.body);
+        Map<String, dynamic> listUsersMap = json.decode(response.body);
         ListUsers listUsers = ListUsers.fromJson(listUsersMap);
-        print(listUsers);
         return listUsers;
       } else {
         return throw ("Error status code ->  ${response.statusCode}");

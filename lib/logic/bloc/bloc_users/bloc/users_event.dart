@@ -5,6 +5,11 @@ sealed class UsersEvent {}
 
 class SearchUsersEvent extends UsersEvent {
   final String keyword;
+  final int pageCurrent;
+  final int pageSize;
+  SearchUsersEvent(this.keyword, this.pageCurrent, this.pageSize);
+}
 
-  SearchUsersEvent({required this.keyword});
+class NextPageEvent extends SearchUsersEvent {
+  NextPageEvent(super.keyword, super.pageCurrent, super.pageSize);
 }

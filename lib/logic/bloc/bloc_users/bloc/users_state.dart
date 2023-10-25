@@ -7,8 +7,17 @@ final class UsersInitial extends UsersState {}
 
 final class SearchUsersSuccessState extends UsersState {
   final ListUsers listUsers;
-
-  SearchUsersSuccessState(this.listUsers);
+  final int currentPage;
+  final int sizePage;
+  final int totalPage;
+  final String currentKeywords;
+  SearchUsersSuccessState(
+    this.listUsers,
+    this.currentPage,
+    this.totalPage,
+    this.sizePage,
+    this.currentKeywords,
+  );
 }
 
 final class SearchUsersLoadingState extends UsersState {}
